@@ -1,0 +1,18 @@
+.data
+
+.text
+
+li a7, 5	#carrega dentro de a7 o valor de cinco
+ecall		#chama sistema
+mv t1, a0	#copia o valor contido em a0 em t1
+ecall		#chama sistema
+add a0, t1, a0	#somando os valores t1 e a0 e add em a0
+
+li a7, 1
+ecall
+
+li a7, 11	#li -> carrega imediatamente o valor
+li a0, 10	# 10 -> equivalente a "\n" na tabela ASCII
+ecall
+
+	

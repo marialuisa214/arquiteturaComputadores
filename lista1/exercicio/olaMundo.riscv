@@ -1,0 +1,9 @@
+.data
+
+	ola: .asciz "Ola Mundo\n"  
+.text
+
+li a7, 4	#chamada de sistema, passando o tipo correto de indicador
+la a0, ola	#'la' carregar o endereço para dentro do registrador a0
+ecall
+	
