@@ -1,0 +1,112 @@
+.data #idados iniciais na memoria RAM -> ja inicializa com ele
+	soma: .asciz "ADD: "
+	subtrai: .asciz "\nSUB: "
+	e: .asciz "\nAND: "
+	ou: .asciz "\nOR: "
+	ouExclusivo: .asciz "\nXOR: "
+	eImediato: .asciz "\nMASK: "
+	deslocamentoEsquerda: "\nSLL("
+	deslocamentoDireita: .asciz "\nSRL("
+	parentesesTerminacao: .asciz "): "
+	
+
+.text #instruções que ele vai executar
+ 
+ li a7, 5
+ ecall
+ mv s1, a0
+ ecall
+ mv s2, a0
+ ecall
+ mv s3, a0
+ 
+ li a7, 4
+ la a0, soma
+ ecall 
+ 
+ add a0, s1, s2
+ li a7, 1
+ ecall 
+ 
+ li a7, 4
+ la a0, subtrai
+ ecall 
+ 
+ sub a0, s1, s2
+ li a7, 1
+ ecall 
+ 
+ li a7, 4
+ la a0, e
+ ecall 
+ 
+ and a0, s1, s2
+ li a7, 1
+ ecall 
+ 
+ 
+ li a7, 4
+ la a0, ou
+ ecall
+ 
+ or a0, s1, s2
+ li a7, 1
+ ecall
+ 
+ li a7, 4
+ la a0, ouExclusivo
+ ecall
+ 
+ xor a0, s1, s2
+ li a7, 1
+ ecall
+ 
+ li a7, 4
+ la a0, eImediato
+ ecall
+ 
+ andi a0, s3, 31
+ mv s4, a0
+ li a7, 1
+ ecall
+ 
+ li a7, 4
+ la a0, deslocamentoEsquerda	
+ ecall
+ 
+ mv a0, s4
+ li a7, 1
+ ecall
+ 
+ li a7, 4
+ la a0, parentesesTerminacao	
+ ecall
+ 
+ sll a0, s1, s4
+ li a7, 1
+ ecall
+ 
+ li a7, 4
+ la a0, deslocamentoDireita	
+ ecall
+ 
+ mv a0, s4
+ li a7, 1
+ ecall
+ 
+ li a7, 4
+ la a0, parentesesTerminacao	
+ ecall
+ 
+ srl a0, s1, s4
+ li a7, 1
+ ecall
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
