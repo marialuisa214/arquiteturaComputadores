@@ -1,0 +1,72 @@
+.data
+quebraLinha: .asciz  "\n"
+str1: .space 1024
+str2: .space 1024
+
+.text
+.globl main
+main:
+   mv s3, zero # coloco a nota inicial do meu aluno sendo zero
+   
+   
+   li a7, 5 #leitura de int -> qunatidade de questões
+   ecall	
+   mv s2, a0 #s2 = valor de questoes
+   
+   
+   # Lendo a primeira string
+   li a7, 8
+   la a0, str1
+   li a1, 1024
+   ecall
+
+   # Lendo a segunda string
+   li a7, 8
+   la a0, str2
+   li a1, 1024
+   ecall
+
+   # Comparando as strings
+   la a0, str1   # Endereço da primeira string
+   la a1, str2   # Endereço da segunda string
+
+   li t0, 0      # Registrador para armazenar a quantidade de caracteres iguais
+
+   loop:
+      lbu t1, 0(a0)   # Carrega um byte da primeira string
+      lbu t2, 0(a1)   # Carrega um byte da segunda string
+
+      beq s2, zero, end
+      addi s2, s2, -1
+      
+
+      beq t1, t2, equal  # Se os caracteres forem iguais, vai para equal
+
+      # Incrementa os ponteiros das strings
+      addi a0, a0, 1
+      addi a1, a1, 1
+      j loop
+
+   equal:
+      # As strings são iguais -> soma
+      
+      addi s3, s3, 1
+      addi a0, a0, 1
+      addi a1, a1, 1
+      j loop
+
+
+   end:
+      # Imprime a quantidade de caracteres iguais
+      mv a0, s3
+      li a7, 1
+      ecall
+      
+       # Quebra de linha
+      li a7, 4
+      la a0, quebraLinha
+      ecall
+
+      # Finaliza o programa
+      li a7, 10
+      ecall
