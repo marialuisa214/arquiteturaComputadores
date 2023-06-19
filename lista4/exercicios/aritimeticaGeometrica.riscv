@@ -1,0 +1,74 @@
+.data
+	quebraLinha: .asciz  "\n"
+	invalido: .asciz  "Entrada invalida."
+	valor: .asciz "valor de b: "
+.text
+
+li a7, 5  #colocando no regitrador a7 a chamada de leitura de inteiro
+ecall #chamada de sistema -> ler inteiro
+mv a1, a0 # salvando no registrador a1
+
+li a7, 5 #colocando no regitrador a7 a chamada de leitura de inteiro
+ecall #chamada de sistema -> ler inteiro
+mv a2, a0 # salvando no registrador a2
+
+addi t1, zero, 1 #t1 = 1
+
+#verificando se as entradas são iguais a 1
+  ble a1, t1, entradaInvalida
+  ble a2, t1, entradaInvalida
+
+funcaoMDC:
+	 #usando outros registradores para nao alterar os valores de inicio ao manipulalos 
+	mv a3, a1
+	mv a4, a2
+	while: 
+	beq a4, zero, retornoMDC #enquanto o meu valor a4 != 0 execute as celulas abaixo
+	
+	rem t2, a3, a4 #divisao t2 = a3%a4 
+	mv a3, a4 #a3 = a4 
+	mv a4, t2 # a4 = t2 sendo que  t2 = resto da divisao
+	j while
+	
+	
+	retornoMDC:
+		mv t3, a3
+		j funcaoMMC
+		
+funcaoMMC:
+	mv a3, a1
+	mv a4, a2
+	mul t4, a3, a4
+	div t4, t4, t3
+	
+resultados:
+li a7, 1
+mv a0, t3
+ecall
+
+# Quebra de linha
+li a7, 4
+la a0, quebraLinha
+ecall
+
+li a7, 1
+mv a0, t4
+ecall
+j end
+
+
+entradaInvalida:
+li a7, 4
+la a0, invalido
+ecall
+
+end:
+
+# Quebra de linha
+li a7, 4
+la a0, quebraLinha
+ecall
+
+# Finaliza o programa
+li a7, 10
+ecall
