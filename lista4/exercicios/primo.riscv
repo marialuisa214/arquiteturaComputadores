@@ -1,0 +1,56 @@
+.data
+	quebraLinha: .asciz  "\n"
+	invalido: .asciz  "Entrada invalida."
+	nao: .asciz  "nao"
+	sim: .asciz  "sim"
+.text
+
+li a7, 5  #colocando no regitrador a7 a chamada de leitura de inteiro
+ecall #chamada de sistema -> ler inteiro
+mv a1, a0 # salvando no registrador a1
+
+addi t1, zero, 1
+
+#verificando se a entrada é menor ou igual a 0
+  ble a1, zero, entradaInvalida
+  beq a1, t1, naoPrimo
+  
+
+addi t4, zero, 4
+addi t2, zero, 2
+for:
+    	mul t3, t2, t2
+    	beq a1, t4, naoPrimo
+	ble a1, t3, simPrimo
+	rem  t3, a1, t2
+	beqz t3, naoPrimo
+	addi t2, t2, 1
+	j for
+ 
+naoPrimo:
+li a7, 4
+la a0, nao
+ecall
+j end
+
+simPrimo:
+li a7, 4
+la a0, sim
+ecall
+j end
+
+entradaInvalida:
+li a7, 4
+la a0, invalido
+ecall
+
+end:
+
+# Quebra de linha
+li a7, 4
+la a0, quebraLinha
+ecall
+
+# Finaliza o programa
+li a7, 10
+ecall
