@@ -3,7 +3,6 @@ Repositório voltado a guardar os trabalhos e listas desenvolvidos na matéria d
 
 ## Estrutura do Repositório
 O repositório está organizado da seguinte maneira:
-/
 ├── lista1/
 │   ├── exercicios/
 │   └── listas/
