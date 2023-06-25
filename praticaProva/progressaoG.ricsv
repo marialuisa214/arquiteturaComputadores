@@ -1,0 +1,49 @@
+.data
+	quebraLinha: .asciz  "\n"
+	resultado: .asciz  "A soma da PG é:  "
+.text
+
+li a7, 5 #coloca no registrador o pedido pra ler um Inteiro
+ecall # chamada de sistema -> 1º entrada = primeeiro termo da PG
+mv a1, a0 #a1 = primeiro termo
+
+ecall # chamada de sistema -> 2º entrada = razão da PG
+mv, a2, a0 # r = razao
+
+ecall # chamada de sistema -> quantidade de Termos da PG
+mv, a3, a0 # a3 = n
+addi a3, a3, -1  # termos que trabalhar encima de um n a menos, pois o t1 ja é passado
+
+mv t1, zero # t1 -> variavel de Loop, que vai verificar se a quantidade de termos foi exedida 
+mv t2, a1 # t2 =  Inicializada ja com o valor do primeiro Termo, representa os t1, t2, t3 ...tn
+mv t3, a1 # t3 = Soma dos Termos 
+
+# Quebra de linha
+li a7, 4
+la a0, resultado
+ecall
+
+calculaSoma:
+	beq t1, a3, acabou # verifica se i = n, quando isso acontecer, ja somamos todos os termos
+	mul t2, t2, a2  # caso ainda existam Termos, multiplicamos t = t-1 * razao 
+	add t3, t3, t2  # soma = soma de todos os termos anteriores + o t2 
+	addi t1, t1, 1  # incremento +1 na minha variavel de loop
+	j calculaSoma   # volta para o FOR
+	
+	
+
+acabou:
+
+mv a0, t3 # a0 = soma dos termos
+li a7, 1
+ecall
+
+
+# Quebra de linha
+li a7, 4
+la a0, quebraLinha
+ecall
+
+# Finaliza o programa
+li a7, 10
+ecall
