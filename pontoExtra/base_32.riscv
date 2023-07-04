@@ -1,0 +1,115 @@
+.data	
+quebraLinha: .asciz  "\n"
+
+.text
+  # Constantes
+  li t6, 10 # t6 = \n
+  li t5, 26 # t5 = 26
+
+  j main
+
+  # s0 = str
+  encoder32:
+  
+  
+    mv t0, zero # bn = 0
+    mv s11, zero #tamano da String
+    li t1, 5 # count = 5
+
+    for1:
+      lbu t2, 0(s0) # t2 = str[i]
+      beq t2, t6, fimFor1
+      addi s11, s11, 1
+      addi s0, s0, 1 # s0 = s0 + 1
+
+      li t3, 7 # j = 7
+      for2:
+        blt t3, zero, fimFor2
+
+        addi t1, t1, -1 # count--
+        srl t4, t2, t3 # c >> j
+        andi t4, t4, 1 # c & 1
+        sll t4, t4, t1 # ((c >> j) & 1) << count
+        or t0, t0, t4 # bn = bn | (((c >> j) & 1) << count)
+
+        if1:
+          bne t1, zero, fimIf1
+          if2:
+            bge t0, t5, elseIf2
+              li a7, 11
+              addi a0, t0, 65
+              ecall 
+            j fimIf2
+          elseIf2:
+              li a7, 11
+              addi a0, t0, 24
+              ecall
+          fimIf2:
+
+          li t1, 5 # count = 5
+          mv t0, zero # bn = 0
+        fimIf1:
+        addi t3, t3, -1 # j--
+        j for2
+      fimFor2:
+      j for1
+    fimFor1:
+
+    lastIf1:
+      addi t1, t1, -5
+      beq t1, zero, fimLastIf1
+      lastIf2:
+        bge t0, t5, elseLastIf2
+          li a7, 11
+          addi a0, t0, 65
+          ecall 
+        j fimLastIf2
+      elseLastIf2:
+          li a7, 11
+          addi a0, t0, 24
+          ecall 
+      fimLastIf2:
+    fimLastIf1:
+    
+    missingEquals:
+    li s10, 5
+    li s9, 8
+    li s8, 40
+    rem s11, s11, s10
+    sub s11, s10, s11
+    mul s11, s11, s9
+    rem s11, s11, s8
+    div s11, s11, s10
+    
+    mv s8, zero
+    forDaAlegria:
+     beq s8, s11, ACABOU
+     li a0, 61
+     li a7, 11
+     ecall
+     addi s11, s11, -1
+     j forDaAlegria
+      
+      ACABOU:
+      # Quebra de linha
+      li a7, 4
+      la a0, quebraLinha
+      ecall
+
+      jr ra
+
+  main:
+    li a0, 34
+    li a7, 9
+    ecall
+
+    li a1, 33
+    li a7, 8
+    ecall
+
+    mv s0, a0
+
+    jal encoder32
+
+    li a7, 10 # exit
+    ecall
